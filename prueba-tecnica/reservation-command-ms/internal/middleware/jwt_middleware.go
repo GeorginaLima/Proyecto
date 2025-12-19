@@ -36,7 +36,7 @@ func JWTMiddleware(next http.HandlerFunc) http.HandlerFunc {
 				}
 				return jwtSecret, nil
 			},
-			jwt.WithoutClaimsValidation(), // 👈 CLAVE
+			jwt.WithoutClaimsValidation(),
 		)
 
 		if err != nil {
@@ -56,3 +56,4 @@ func JWTMiddleware(next http.HandlerFunc) http.HandlerFunc {
 		next(w, r)
 	}
 }
+
