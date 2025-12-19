@@ -5,12 +5,18 @@ import (
 	"net/http"
 
 	"reservation-query-ms/internal/handler"
+	"reservation-query-ms/internal/repository"
 	"reservation-query-ms/internal/service"
 )
 
 func main() {
 	reservationService := service.NewReservationService()
 	reservationHandler := handler.NewReservationHandler(reservationService)
+
+	if err := repository.InitDBFromEnv(); err != nil {
+		log.Fatal("database init:", err)
+	}
+	defer repository.CloseDB()
 
 	http.HandleFunc("/reservation", reservationHandler.GetReservation)
 

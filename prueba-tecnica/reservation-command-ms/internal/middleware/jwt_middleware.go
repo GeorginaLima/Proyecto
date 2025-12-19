@@ -51,7 +51,7 @@ func JWTMiddleware(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		log.Println("JWT VALID ✅")
+		log.Println("JWT VALIDO")
 
 		next(w, r)
 	}

@@ -1,24 +1,18 @@
 package service
 
-import "reservation-query-ms/internal/model"
+import (
+	"context"
+	"reservation-query-ms/internal/model"
+	"reservation-query-ms/internal/repository"
+)
 
-type ReservationService struct {
-	reservations []model.Reservation
-}
+type ReservationService struct{}
 
 func NewReservationService() *ReservationService {
-	return &ReservationService{
-		reservations: []model.Reservation{
-			{
-				ID:           "example-id",
-				CustomerName: "Georgina",
-				Date:         "2025-12-20T00:00:00Z",
-				Status:       "CREATED",
-			},
-		},
-	}
+	return &ReservationService{}
 }
 
-func (s *ReservationService) GetAll() []model.Reservation {
-	return s.reservations
+func (s *ReservationService) GetAll() ([]model.Reservation, error) {
+	ctx := context.Background()
+	return repository.GetAllReservations(ctx)
 }

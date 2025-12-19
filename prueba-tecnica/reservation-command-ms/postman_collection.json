@@ -1,0 +1,72 @@
+{
+  "info": {
+    "_postman_id": "b1d2c3e4-f5a6-4789-9012-abcdef123456",
+    "name": "Reservation Command MS",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection to test create/update/delete endpoints of reservation-command-ms. Configure `baseUrl` and `jwt_token` variables before use."
+  },
+  "item": [
+    {
+      "name": "Create Reservation",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer_name\": \"Alice\",\n  \"date\": \"2025-12-20T00:00:00Z\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/create-reservation",
+          "host": ["{{baseUrl}}"],
+          "path": ["create-reservation"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Reservation",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"customer_name\": \"Alice Updated\",\n  \"date\": \"2025-12-21T00:00:00Z\",\n  \"status\": \"UPDATED\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/update-reservation?id={{id}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["update-reservation"],
+          "query": [ { "key": "id", "value": "{{id}}" } ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Reservation",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/delete-reservation?id={{id}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["delete-reservation"],
+          "query": [ { "key": "id", "value": "{{id}}" } ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "https://localhost:8443" },
+    { "key": "jwt_token", "value": "" },
+    { "key": "id", "value": "" }
+  ]
+}

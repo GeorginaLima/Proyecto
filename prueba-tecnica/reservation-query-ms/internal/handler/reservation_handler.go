@@ -21,6 +21,11 @@ func (h *ReservationHandler) GetReservation(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	res, err := h.service.GetAll()
+	if err != nil {
+		http.Error(w, "could not fetch reservations", http.StatusInternalServerError)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(h.service.GetAll())
+	json.NewEncoder(w).Encode(res)
 }

@@ -1,39 +1,32 @@
 package service
 
 import (
+	"context"
 	"reservation-command-ms/internal/model"
+	"reservation-command-ms/internal/repository"
 
 	"github.com/google/uuid"
 )
 
-type ReservationService struct {
-	reservations map[string]model.Reservation
-}
+type ReservationService struct{}
 
 func NewReservationService() *ReservationService {
 	return &ReservationService{}
 }
 
-func (s *ReservationService) CreateReservation(r model.Reservation) model.Reservation {
+func (s *ReservationService) CreateReservation(r model.Reservation) (model.Reservation, error) {
 	r.ID = uuid.New().String()
 	r.Status = "CREATED"
-	return r
-}
-func (s *ReservationService) UpdateReservation(id string, r model.Reservation) (model.Reservation, bool) {
-	if _, exists := s.reservations[id]; !exists {
-		return model.Reservation{}, false
-	}
-
-	r.ID = id
-	s.reservations[id] = r
-	return r, true
+	ctx := context.Background()
+	return repository.CreateReservation(ctx, r)
 }
 
-func (s *ReservationService) DeleteReservation(id string) bool {
-	if _, exists := s.reservations[id]; !exists {
-		return false
-	}
+func (s *ReservationService) UpdateReservation(id string, r model.Reservation) (model.Reservation, bool, error) {
+	ctx := context.Background()
+	return repository.UpdateReservation(ctx, id, r)
+}
 
-	delete(s.reservations, id)
-	return true
+func (s *ReservationService) DeleteReservation(id string) (bool, error) {
+	ctx := context.Background()
+	return repository.DeleteReservation(ctx, id)
 }

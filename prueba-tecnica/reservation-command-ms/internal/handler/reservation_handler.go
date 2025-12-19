@@ -27,7 +27,11 @@ func (h *ReservationHandler) CreateReservation(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	created := h.service.CreateReservation(reservation)
+	created, err := h.service.CreateReservation(reservation)
+	if err != nil {
+		http.Error(w, "could not create reservation", http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(created)
@@ -50,7 +54,11 @@ func (h *ReservationHandler) UpdateReservation(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	updated, ok := h.service.UpdateReservation(id, reservation)
+	updated, ok, err := h.service.UpdateReservation(id, reservation)
+	if err != nil {
+		http.Error(w, "could not update reservation", http.StatusInternalServerError)
+		return
+	}
 	if !ok {
 		http.NotFound(w, r)
 		return
@@ -72,7 +80,12 @@ func (h *ReservationHandler) DeleteReservation(w http.ResponseWriter, r *http.Re
 		return
 	}
 
-	if !h.service.DeleteReservation(id) {
+	ok, err := h.service.DeleteReservation(id)
+	if err != nil {
+		http.Error(w, "could not delete reservation", http.StatusInternalServerError)
+		return
+	}
+	if !ok {
 		http.NotFound(w, r)
 		return
 	}
